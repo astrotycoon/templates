@@ -1,12 +1,15 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <templates/list.h>
+#include <list.h>
+#include <Assert.h>
 struct node {
 	int value;
 	__linked_as_list__
 };
 int main()
 {
+	int a = 0;
+	//DOOR(a, 1, 2);
 	struct node *head = list_new_head(struct node);
 	int i = 6;
 	while (i--) {
@@ -26,7 +29,8 @@ int main()
 
 	puts("After replace");
 	free(last);
-	list_for_each(it, head) 
+	list_for_each(it, head) {
 		printf("%d\n", it->value);
+	}
 	return 0;
 }

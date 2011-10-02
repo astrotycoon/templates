@@ -1,7 +1,7 @@
 #ifndef TEMPLATE_LIST
 #define TEMPLATE_LIST
 #include <stdlib.h>
-#include <trickes/hacker.h>
+#include <trickes/container-of.h>
 struct _double_list {
 	struct _double_list * next;
 	struct _double_list * prev;	

@@ -1,20 +1,22 @@
 #ifndef __ASSERT_H
 #define __ASSERT_H
-#include "pp_narg.h"
+#include <trickes/multi-args.h>
+#include <string.h>
+#include <stdio.h>
 #define _SAFETY_DOOR_
-
+/*
+*/
 #ifdef _SAFETY_DOOR_
-#define SDOOR(test) \
-{ \
-	if (unlikely(!(test))) { \
-		printk(KERN_NOTICE "%s:%d:In function %s: Assertion (" \
-				#test \
-				") fail!\n", strrchr(__FILE__, '/') + 1, \
-				__LINE__, __FUNCTION__); \
-	} \
-}
+#define SDOOR(test)							 \
+do {                                                                     \
+	if (!(test)) {                                                   \
+		printf("%s:%d: Assertion ("             		 \
+			#test ") failed in function %s\n", __FILE__,   	 \
+			__LINE__, __FUNCTION__);                         \
+	}                                                                \
+} while(0)
 #else
-#define SDOOR(test)
+#define SDOOR(test) do {} while(0)
 #endif/*SAFETY_DOOR*/
 
 
@@ -23,7 +25,7 @@
 #ifdef _SAFETY_DOOR_
 #define DOOR(...) GATE(__VA_ARGS__)
 #else
-#define DOOR(...)
+#define DOOR(...) do {} while(0)
 #endif
 
 #endif/*__ASSERT_H*/
