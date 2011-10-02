@@ -4,8 +4,6 @@
 #include <string.h>
 #include <stdio.h>
 #define _SAFETY_DOOR_
-/*
-*/
 #ifdef _SAFETY_DOOR_
 #define SDOOR(test)							 \
 do {                                                                     \
