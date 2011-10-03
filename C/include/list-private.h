@@ -1,30 +1,26 @@
 #ifndef _LIST_PRIVATE_H_
 #define _LIST_PRIVATE_H_
 #include <stdlib.h>
-#include <trickes/container-of.h>
-struct _double_list {
-	struct _double_list * next;
-	struct _double_list * prev;	
+#include <lobject/container-of.h>
+struct __double_list {
+	struct __double_list * next;
+	struct __double_list * prev;	
 };
-typedef struct _double_list list_head_t;
-#define __linked_as_list__ struct _double_list __list_linkers;
+#define __linked_as_list__ struct __double_list __list_linkers;
 
 #define list_new_head(type) ({ \
 	type * _head = malloc(sizeof(type)); \
 	__list_init(&_head->__list_linkers); \
 	_head;})
 
-#define list_init(hdr) {\
-	struct _double_list *ptr = &(hdr)->__list_linkers; \
-	__list_init(ptr);}
 
-static inline void __list_init(struct _double_list * ptr)
+static inline void __list_init(struct __double_list * ptr)
 {
 	ptr->prev = ptr;
 	ptr->next = ptr;
 }
 
-static inline struct _double_list * list_pickup(struct _double_list *ptr) 
+static inline struct __double_list * list_pickup(struct __double_list *ptr) 
 { 
 	if (ptr->prev) 
 		ptr->prev->next = ptr->next;
@@ -34,7 +30,7 @@ static inline struct _double_list * list_pickup(struct _double_list *ptr)
 }
 
 static inline void 
-__list_replace(struct _double_list *ptr, struct _double_list *nptr)
+__list_replace(struct __double_list *ptr, struct __double_list *nptr)
 {
 	nptr->prev = ptr->prev;
 	nptr->next = ptr->next;
@@ -44,12 +40,12 @@ __list_replace(struct _double_list *ptr, struct _double_list *nptr)
 
 #define list_prev(ptr) ({ \
 	typeof(ptr) __ptr = ptr; \
-	struct _double_list *__ptmp = __ptr->__list_linkers.prev;\
+	struct __double_list *__ptmp = __ptr->__list_linkers.prev;\
 	__ptmp ? container_of(__ptmp, typeof(*__ptr), __list_linkers) : NULL; })
 
 #define list_next(ptr) ({ \
 	typeof(ptr) __ptr = ptr; \
-	struct _double_list *__ntmp = __ptr->__list_linkers.next;\
+	struct __double_list *__ntmp = __ptr->__list_linkers.next;\
 	__ntmp ? container_of(__ntmp, typeof(*__ptr), __list_linkers) : NULL; })
 
 #define list_is_empty(head) \
@@ -62,22 +58,22 @@ __list_replace(struct _double_list *ptr, struct _double_list *nptr)
 
 #define list_insert_before(ptr, nptr) ({\
 	typeof(ptr) __ptr = ptr; \
-	struct _double_list *__tmp; \
+	struct __double_list *__tmp; \
 	__tmp = __list_insert_before(&(ptr)->__list_linkers, \
 		&(nptr)->__list_linkers); \
 	__tmp ? container_of(__tmp, typeof(*__ptr), __list_linkers) : NULL; })
 	
 #define list_insert_after(ptr, nptr) ({\
 	typeof(ptr) __ptr = ptr; \
-	struct _double_list *__tmp; \
+	struct __double_list *__tmp; \
 	__tmp = __list_insert_after(&(ptr)->__list_linkers, \
 		&(nptr)->__list_linkers); \
 	__tmp ? container_of(__tmp, typeof(*__ptr), __list_linkers) : NULL; })
 
 #define __list_insert_before(ptr, nptr) ({\
-	struct _double_list *__ptr = ptr; \
-	struct _double_list *__nptr = nptr; \
-	struct _double_list *__ibtmp = __ptr->prev; \
+	struct __double_list *__ptr = ptr; \
+	struct __double_list *__nptr = nptr; \
+	struct __double_list *__ibtmp = __ptr->prev; \
 	__ptr->prev = __nptr; \
 	__nptr->next = __ptr; \
 	__nptr->prev = __ibtmp; \
@@ -86,9 +82,9 @@ __list_replace(struct _double_list *ptr, struct _double_list *nptr)
 	__ibtmp; })
 
 #define __list_insert_after(ptr, nptr) ({\
-	struct _double_list *__ptr = ptr; \
-	struct _double_list *__nptr = nptr; \
-	struct _double_list *__ibtmp = __ptr->next; \
+	struct __double_list *__ptr = ptr; \
+	struct __double_list *__nptr = nptr; \
+	struct __double_list *__ibtmp = __ptr->next; \
 	__ptr->next = __nptr; \
 	__nptr->prev = __ptr; \
 	__nptr->next = __ibtmp; \

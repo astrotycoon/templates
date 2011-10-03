@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <list.h>
-#include <lassert.h>
+#include <lobject/lassert.h>
 extern int print();
 struct node {
 	__linked_as_list__

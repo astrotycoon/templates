@@ -1,6 +1,6 @@
 #ifndef __ASSERT_H
 #define __ASSERT_H
-#include <trickes/multi-args.h>
+#include <lobject/multi-args.h>
 #include <string.h>
 #include <stdio.h>
 #define _SAFETY_DOOR_

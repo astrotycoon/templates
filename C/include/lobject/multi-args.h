@@ -1,7 +1,7 @@
 #ifndef MICRO_PP_NARG_H
 #define MICRO_PP_NARG_H
 /* The PP_NARG macro returns the number of arguments that have been
- * passed to it. limit = 64
+ * passed to it. limit = 63
  */
 
 #define PP_NARG(...) PP_NARG_(0, ##__VA_ARGS__,PP_RSEQ_N())

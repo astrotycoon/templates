@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <Assert.h>
+#include <lobject/lassert.h>
 int main()
 {
 	int a = 0;
