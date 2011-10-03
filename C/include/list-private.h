@@ -1,12 +1,12 @@
-#ifndef TEMPLATE_LIST
-#define TEMPLATE_LIST
+#ifndef _LIST_PRIVATE_H_
+#define _LIST_PRIVATE_H_
 #include <stdlib.h>
 #include <trickes/container-of.h>
 struct _double_list {
 	struct _double_list * next;
 	struct _double_list * prev;	
 };
-typedef struct _double_list * list_t;
+typedef struct _double_list list_head_t;
 #define __linked_as_list__ struct _double_list __list_linkers;
 
 #define list_new_head(type) ({ \
@@ -33,7 +33,8 @@ static inline struct _double_list * list_pickup(struct _double_list *ptr)
 	return ptr->next; 
 }
 
-static inline void __list_replace(struct _double_list *ptr, struct _double_list *nptr)
+static inline void 
+__list_replace(struct _double_list *ptr, struct _double_list *nptr)
 {
 	nptr->prev = ptr->prev;
 	nptr->next = ptr->next;
@@ -113,4 +114,4 @@ static inline void __list_replace(struct _double_list *ptr, struct _double_list 
 		free(it); \
 	free(__hdr); \
 	})
-#endif
+#endif /*_LIST_PRIVATE_H_*/
