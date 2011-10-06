@@ -1,6 +1,6 @@
 #ifndef _LIST_H_
 #define _LIST_H_
-#include <lobject/multi-args.h>
+#include <lobject/new.h>
 #include <list-private.h>
 typedef struct __double_list list_head_t;
 
@@ -17,21 +17,21 @@ typedef struct __double_list list_head_t;
  * not understanded it yet.
 **/
 
-#define list_add_2(ptr, head)					\
+#define list_add_front_2(ptr, head)				\
 do {                                                            \
 	list_head_t *__ptr = (list_head_t *)(ptr);              \
 	list_head_t *__head = (head);                           \
 	__list_add(__ptr, __head);   		                \
 } while (0)
 
-#define list_add_3(ptr, member, head)				\
+#define list_add_front_3(ptr, member, head)	  		\
 do {                                                            \
 	list_head_t *__ptr = &(ptr)->member;                    \
 	list_head_t *__head = (head);                           \
 	__list_add(__ptr, __head);                 		\
 } while (0)
 
-#define list_add(...) LCALL(list_add, __VA_ARGS__)(__VA_ARGS__)
+#define list_add_front(...) LCALL(list_add_front, __VA_ARGS__)(__VA_ARGS__)
 
 
 /**
@@ -55,6 +55,8 @@ do {                                                            \
 } while (0)
 
 #define list_add_tail(...) LCALL(list_add_tail, __VA_ARGS__)(__VA_ARGS__)
+
+#define list_add(...) list_add_tail(__VA_ARGS__)
 
 
 /**
@@ -83,7 +85,7 @@ do {                                                            \
  * not understanded it yet.
 **/
 
-#define list_delete_1(ptr)						\
+#define list_remove_1(ptr)						\
 ({                                                                      \
  	typeof(ptr) __ptr = (ptr);					\
 	list_head_t *__lks = (list_head_t *)__ptr;                      \
@@ -91,7 +93,7 @@ do {                                                            \
  	__ptr;								\
 })
 
-#define list_delete_2(ptr, member)					\
+#define list_remove_2(ptr, member)					\
 ({                                                                      \
  	typeof(ptr) __ptr = (ptr);					\
 	list_head_t *__lks = &__ptr->member;                            \
@@ -99,7 +101,8 @@ do {                                                            \
  	__ptr;								\
 })
 
-#define list_delete(...) LCALL(list_delete, __VA_ARGS__)(__VA_ARGS__)
+#define list_remove(...) LCALL(list_remove, __VA_ARGS__)(__VA_ARGS__)
+
 
 
 /**
@@ -130,15 +133,15 @@ do {                                                            \
 
 #define list_rbegin_2(head, type)					\
 ({                                                                      \
-	list_head_t *rbegin = __list_rbegin(head);                        \
-	list_entry(rbegin, type);                                        \
+	list_head_t *rbegin = __list_rbegin(head);                      \
+	list_entry(rbegin, type);                                       \
 })
 
 
 #define list_rbegin_3(head, type, member)				\
 ({                                                                      \
-	list_head_t *rbegin = __list_rbegin(head);                        \
-	list_entry(rbegin, type, member);                                \
+	list_head_t *rbegin = __list_rbegin(head);                      \
+	list_entry(rbegin, type, member);                               \
 })
 #define list_rbegin(...) LCALL(list_rbegin, __VA_ARGS__)(__VA_ARGS__)
 
@@ -147,6 +150,67 @@ do {                                                            \
 #define list_rend(head, type, ...) (void *)(head)
 
 #define list_last(...) list_rbegin(__VA_ARGS__)
+
+
+/**
+ * the linker should act as the first member of @ptr
+ * We strongly recommand you NOT to use list_del_front_2, if you have
+ * not understanded it yet.
+**/
+
+#define list_del_front_2(head, type)					\
+({                                                                      \
+ 	type *ret = NULL;                                               \
+ 	if (!list_empty(head)) {                                        \
+		ret = list_begin(head, type);                           \
+		list_remove(ret);                                       \
+	}                                                               \
+	ret;                                                            \
+})
+
+#define list_del_front_3(head, type, member)				\
+({                                                                      \
+ 	type *ret = NULL;                                               \
+	if (!list_empty(head)) {                                        \
+		ret = list_begin(head, type, member);                   \
+		list_remove(ret, member);                               \
+	}                                                               \
+	ret;                                                            \
+})
+
+#define list_del_front(...) LCALL(list_del_front, __VA_ARGS__)(__VA_ARGS__)
+
+
+/**
+ * the linker should act as the first member of containing structure
+ * We strongly recommand you NOT to use list_del_tail_2, if you have
+ * not understanded it yet.
+**/
+
+#define list_del_tail_2(head, type)					\
+({                                                                      \
+ 	type *ret = NULL;                                               \
+ 	if (!list_empty(head)) {                                        \
+		ret = list_last(head, type);                            \
+		list_remove(ret);                                       \
+	}                                                               \
+	ret;                                                            \
+})
+
+#define list_del_tail_3(head, type, member)				\
+({                                                                      \
+ 	type *ret = NULL;                                               \
+	if (!list_empty(head)) {                                        \
+		ret = list_last(head, type, member);                    \
+		list_remove(ret, member);                               \
+	}                                                               \
+	ret;                                                            \
+})
+
+#define list_del_tail(...) LCALL(list_del_tail, __VA_ARGS__)(__VA_ARGS__)
+
+#define list_del(...) list_del_tail(__VA_ARGS__)
+
 /**
  * the linker should act as the first member of the containing structure
  * We strongly recommand you NOT to use list_prev_1, if you have
@@ -292,7 +356,7 @@ do {                                                            \
 do {                                                                    \
 	while (!list_empty(head)) {                                     \
 		type * first = list_begin(head, type);                  \
-		list_delete(first);                                     \
+		list_remove(first);                                     \
 		free(first);                                            \
 	}                                                               \
 } while (0)
@@ -301,7 +365,7 @@ do {                                                                    \
 do {                                                                    \
 	while (!list_empty(head)) {                                     \
 		type * first = list_begin(head, type, member);          \
-		list_delete(first);                                     \
+		list_remove(first);                                     \
 		free(first);                                            \
 	}                                                               \
 } while (0)

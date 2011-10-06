@@ -23,12 +23,9 @@ int main()
 	list_head_init(hdr);
 	for (i = 0; i < 5; i++) {
 		struct mynode *tmp = new(struct mynode);
-		list_head_init(&tmp->linker);
-		list_head_init(tmp, linker);
 		list_head_init(tmp);
 		tmp->value = i;
-		//list_add_tail(tmp, hdr);
-		list_add_tail(tmp, linker, hdr);
+		list_add_front(tmp, linker, hdr);
 	}
 	list_head_t *tmp = hdr->next;
 	for (i = 0; i < 5; i++) {
@@ -42,7 +39,7 @@ int main()
 		printf("%d\n", itt->value);
 	}
 	puts("=====Test list_delete=====");
-	first = list_delete(list_entry(hdr->next, struct mynode));
+	first = list_remove(list_entry(hdr->next, struct mynode));
 	tmp = hdr->next;
 	for (i = 0; i < 4; i++) {
 		printf("i = %d : %d\n", i, list_entry(tmp, struct mynode)->value);
@@ -95,13 +92,20 @@ int main()
 		printf("%d\n", itt->value);
 	}
 
-	puts("=====Test list_for_each_safe_reverse=====");
+	puts("=====Test list_del=====");
+	list_del_front(head, struct mynode, linker);
+	list_for_each_safe(itt, itt_tmp, head) {
+		printf("%d\n", itt->value);
+	}
+
+	puts("=====Test list_for_each_safe=====");
 	list_for_each_safe(itt, itt_tmp, head) {
 		if (itt->value == 2) {
 			new_head = list_split(itt, linker, head);
 			break;
 		}
 	}
+
 	puts("=====Test list_split=====");
 	puts("head:");
 	list_for_each_safe(itt, itt_tmp, head) {
@@ -111,5 +115,7 @@ int main()
 	list_for_each_safe(itt, itt_tmp, new_head) {
 		printf("%d\n", itt->value);
 	}
+
+
 	return 0;
 }
