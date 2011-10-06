@@ -2,6 +2,7 @@
 #define _LIST_PRIVATE_H_
 #include <stdlib.h>
 #include <lobject/container-of.h>
+#include <memory.h>
 struct __double_list {
 	struct __double_list * next;
 	struct __double_list * prev;	

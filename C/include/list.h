@@ -308,4 +308,89 @@ do {                                                                    \
 
 #define list_destroy(...) LCALL(list_destroy, __VA_ARGS__)(__VA_ARGS__)
 
+
+/**
+ * the linker should act as the first member of the containing structure
+ * We strongly recommand you NOT to use list_destroy_2, 
+ * if you have not understanded it yet.
+**/
+
+#define list_copy_2(head, type)						\
+({                                                                      \
+ 	list_head_t *rethead = new(list_head_t);                        \
+	list_head_init(rethead);                                        \
+	type *new_node, *itt;                                           \
+	list_for_each (itt, head) {                                     \
+		new_node = new(type);                                   \
+		if (!new_node) {			         	\
+ 			list_destroy(rethead, type);                    \
+			break;                                          \
+		}                                                       \
+		memcpy(new_node, itt, sizeof(type));                    \
+		list_head_init(new_node);                               \
+		list_add_tail(new_node, rethead);                       \
+	}                                                               \
+	rethead;                                                        \
+})
+
+#define list_copy_3(head, type, member)					\
+({                                                                      \
+ 	list_head_t *rethead = new(list_head_t);                        \
+	list_head_init(rethead);                                        \
+	type *new_node, *itt;                                           \
+	list_for_each (itt, head) {                                     \
+		new_node = new(type);                                   \
+		if (!new_node) {					\
+ 			list_destroy(rethead, type);                    \
+			break;                                          \
+		}                                                       \
+		memcpy(new_node, itt, sizeof(type));                    \
+		list_head_init(new_node, member);                       \
+		list_add_tail(new_node, member, rethead);               \
+	}                                                               \
+	rethead;                                                        \
+})
+
+#define list_copy(...) LCALL(list_copy, __VA_ARGS__)(__VA_ARGS__)
+
+
+/**
+ * the linker should act as the first member of the containing structure
+ * We strongly recommand you NOT to use list_split_2, 
+ * if you have not understanded it yet.
+**/
+
+#define list_split_2(pos, head)						\
+({                                                                      \
+ 	list_head_t *rethead = new(list_head_t);                        \
+	list_head_init(rethead);                                        \
+                                                                        \
+	list_head_t *cur = (list_head_t *)pos;                          \
+	list_head_t *prev = __list_prev(cur);                           \
+	list_head_t *last = 						\
+ 		(list_head_t *)list_last(head, typeof(*pos));		\
+	__list_concatenate(prev, head);                                 \
+	__list_concatenate(rethead, cur);                               \
+	__list_concatenate(last, rethead);                              \
+	rethead;                                                        \
+})
+
+#define list_split_3(pos, member, head)					\
+({                                                                      \
+ 	list_head_t * rethead = new(list_head_t);                       \
+	list_head_init(rethead);                                        \
+	                                                                \
+	list_head_t *cur = &pos->member;                                \
+	list_head_t *prev = __list_prev(cur);                           \
+	list_head_t *last =						\
+ 		&list_last(head, typeof(*pos))->member;                 \
+	__list_concatenate(prev, head);                                 \
+	__list_concatenate(rethead, cur);                               \
+	__list_concatenate(last, rethead);                              \
+	rethead;                                                        \
+})
+
+#define list_split(...) LCALL(list_split, __VA_ARGS__)(__VA_ARGS__)
+
+
 #endif /*_LIST_H_*/
