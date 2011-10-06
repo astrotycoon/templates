@@ -19,8 +19,7 @@ int main()
 	list_head_t *new_head;
 
 	puts("=====Test list_head_init, list_entry, list_add=====");
-	list_head_t hdr[1];
-	list_head_init(hdr);
+	DECLARE_LIST(hdr);
 	for (i = 0; i < 5; i++) {
 		struct mynode *tmp = new(struct mynode);
 		list_head_init(tmp);

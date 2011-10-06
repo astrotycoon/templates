@@ -9,12 +9,11 @@ struct node {
 
 int main()
 {
-	stack_head_t stack[1];	
+	DECLARE_STACK(stack);
 	struct node *node;
 	struct node *itt;
 	int i = 0;
 
-	stack_head_init(stack);
 	for (i = 0; i < 10; i++) {
 		node = new(struct node);
 		stack_head_init(node, linker);

@@ -4,6 +4,30 @@
 #include <list-private.h>
 typedef struct __double_list list_head_t;
 
+/**
+ * the linker should act as the first member of @ptr
+ * We strongly recommand you NOT to use list_head_init_1, if you have
+ * not understanded it yet.
+**/
+
+#define list_head_init_1(ptr)					\
+do {                                                            \
+	list_head_t *__ptr = (list_head_t *)(ptr);              \
+	__list_head_init(__ptr);                                \
+} while (0)
+
+#define list_head_init_2(ptr, member)				\
+do {                                                            \
+	__list_head_init(&(ptr)-> member);                      \
+} while (0)
+
+#define list_head_init(...) LCALL(list_head_init, __VA_ARGS__)(__VA_ARGS__)
+
+
+#define DECLARE_LIST(name)						\
+	list_head_t name[1];                                            \
+	list_head_init(name)
+
 #define list_entry(...) container_of(__VA_ARGS__)
 
 #define list_empty(head)					\
@@ -57,26 +81,6 @@ do {                                                            \
 #define list_add_tail(...) LCALL(list_add_tail, __VA_ARGS__)(__VA_ARGS__)
 
 #define list_add(...) list_add_tail(__VA_ARGS__)
-
-
-/**
- * the linker should act as the first member of @ptr
- * We strongly recommand you NOT to use list_head_init_1, if you have
- * not understanded it yet.
-**/
-
-#define list_head_init_1(ptr)					\
-do {                                                            \
-	list_head_t *__ptr = (list_head_t *)(ptr);              \
-	__list_head_init(__ptr);                                \
-} while (0)
-
-#define list_head_init_2(ptr, member)				\
-do {                                                            \
-	__list_head_init(&(ptr)-> member);                      \
-} while (0)
-
-#define list_head_init(...) LCALL(list_head_init, __VA_ARGS__)(__VA_ARGS__)
 
 
 /**
