@@ -1,14 +1,14 @@
 #ifndef __ASSERT_H
 #define __ASSERT_H
 #include <lobject/multi-args.h>
+#include <lobject/lprint.h>
 #include <string.h>
-#include <stdio.h>
 #define _SAFETY_DOOR_
 #ifdef _SAFETY_DOOR_
 #define SDOOR(test)							 \
 do {                                                                     \
 	if (!(test)) {                                                   \
-		printf("%s:%d: Assertion ("             		 \
+		lprint("%s:%d: Assertion ("             		 \
 			#test ") failed in function %s\n", __FILE__,   	 \
 			__LINE__, __FUNCTION__);                         \
 	}                                                                \
