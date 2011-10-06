@@ -1,43 +1,93 @@
-#define FAST_UPCAST
 #include <stdio.h>
 #include <stdlib.h>
 #include <list.h>
 #include <lobject/lassert.h>
-extern int print();
+#include <lobject/new.h>
 struct node {
-	__linked_as_list__
+	list_head_t linker;
 	int value;
 };
-
 int main()
 {
-	print();
-	int a = 0;
-	//DOOR(a, 1, 2);
-	struct node *head = list_new_head(struct node);
-	list_head_t *list;
-	list = malloc(sizeof(list_head_t));
-	list_head_init(list);
-	int i = 6;
-	while (i--) {
-		struct node *temp = malloc(sizeof(struct node));
-		temp->value = i;
-		list_insert_after(head, temp);
+	int i;
+	struct node *itt;
+	struct node *first;
+	struct node *last;
+	struct node *itt_tmp;
+
+	puts("=====Test list_head_init, list_entry, list_add=====");
+	list_head_t hdr[1];
+	list_head_init(hdr);
+	for (i = 0; i < 5; i++) {
+		struct node *tmp = new(struct node);
+		list_head_init(&tmp->linker);
+		list_head_init(tmp, linker);
+		list_head_init(tmp);
+		tmp->value = i;
+		//list_add_tail(tmp, hdr);
+		list_add_tail(tmp, linker, hdr);
 	}
-	struct node *it;
-	list_for_each(it, head) {
-		printf("%d\n", it->value);
+	list_head_t *tmp = hdr->next;
+	for (i = 0; i < 5; i++) {
+		printf("i = %d : %d\n", i, list_entry(tmp, struct node)->value);
+		tmp = tmp->next;
+	}
+	puts("=====Test list_end=====");
+	for (itt = list_begin(hdr, struct node);
+			itt != list_end(hdr, struct node);
+					itt = list_next(itt)) {
+		printf("%d\n", itt->value);
+	}
+	puts("=====Test list_delete=====");
+	first = list_delete(list_entry(hdr->next, struct node));
+	tmp = hdr->next;
+	for (i = 0; i < 4; i++) {
+		printf("i = %d : %d\n", i, list_entry(tmp, struct node)->value);
+		tmp = tmp->next;
+	}
+	puts("=====Test list_begin=====");
+	first = list_begin(hdr, struct node);
+	printf("first node value = %d\n", first->value);
+	puts("=====Test list_next=====");
+	struct node * second = list_next(first);
+	printf("second node value = %d\n", second->value);
+	puts("=====Test list_end=====");
+	for (itt = list_begin(hdr, struct node);
+			itt != list_end(hdr, struct node);
+					itt = list_next(itt)) {
+		printf("%d\n", itt->value);
+	}
+	puts("=====Test list_prev, list_rbegin, list_rend=====");
+	for (itt = list_rbegin(hdr, struct node);
+			itt != list_rend(hdr, struct node);
+					itt = list_prev(itt)) {
+		printf("%d\n", itt->value);
+	}
+	puts("=====Test list_last=====");
+	last = list_last(hdr, struct node);
+		printf("%d\n", last->value);
+
+	puts("=====Test list_for_each=====");
+	list_for_each(itt, hdr) {
+		printf("%d\n", itt->value);
 	}
 
-	struct node *new_last  = malloc(sizeof(struct node));
-	new_last->value = 100;
-	struct node *last = list_prev(head);
-	list_replace(last, new_last);
+	puts("=====Test list_for_each_reverse=====");
+	list_for_each_reverse(itt, hdr, linker) {
+		printf("%d\n", itt->value);
+	}
 
-	puts("After replace");
-	free(last);
-	list_for_each(it, head) {
-		printf("%d\n", it->value);
+	puts("=====Test list_destroy=====");
+	list_destroy(hdr, struct node, linker);
+	list_for_each_reverse(itt, hdr, linker) {
+		printf("%d\n", itt->value);
+	}
+
+	puts("=====Test list_for_each_safe_reverse=====");
+	list_for_each_safe_reverse(itt, itt_tmp, hdr) {
+		if (itt->value == 2)
+			itt->linker.next=hdr;
+		printf("%d\n", itt->value);
 	}
 	return 0;
 }

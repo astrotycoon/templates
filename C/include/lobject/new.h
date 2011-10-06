@@ -6,5 +6,5 @@
 
 #define new_1(type) new_2(type, 1)
 
-#define new(...) LCALL(new, __VA_ARGS__)
+#define new(...) LCALL(new, __VA_ARGS__)(__VA_ARGS__)
 #endif /*_NEW_H_*/

@@ -85,7 +85,7 @@
 }
 #define FOR_EACH(what, ...) FOR_EACH_(PP_SHORT_NARG(__VA_ARGS__), what, __VA_ARGS__)
 
-#define LCALL_(N, what, ...) CONCATENATE(what, N)(__VA_ARGS__)
-#define LCALL(what, ...) 					\
-	LCALL_(PP_SHORT_NARG(__VA_ARGS__), CONCATENATE(what, _ ), __VA_ARGS__)
+#define _LCALL(what_, N) CONCATENATE(what_, N)
+#define LCALL(what, ...) _LCALL(what##_, PP_SHORT_NARG(__VA_ARGS__))
+
 #endif /*MICRO_PP_NARG_H*/

@@ -1,5 +1,6 @@
 INCDIR := $(shell pwd)/../../include
-test:	main.c tmp.c
-	gcc -I$(INCDIR) -o $@ $^
+CFLAGS=-Wall
+test:	main.c
+	gcc $(CFLAGS) -I$(INCDIR) -o $@ $^
 clean:
 	-rm test
