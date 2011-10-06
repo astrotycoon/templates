@@ -3,6 +3,7 @@
 #include <lobject/new.h>
 #include <list-private.h>
 typedef struct __double_list list_head_t;
+typedef list_head_t list_node_t;
 
 /**
  * the linker should act as the first member of @ptr
@@ -22,7 +23,7 @@ do {                                                            \
 } while (0)
 
 #define list_head_init(...) LCALL(list_head_init, __VA_ARGS__)(__VA_ARGS__)
-
+#define list_node_init(...) list_head_init(__VA_ARGS__)
 
 #define DECLARE_LIST(name)						\
 	list_head_t name[1];                                            \

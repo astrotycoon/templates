@@ -3,8 +3,10 @@
 #include <list.h>
 
 typedef list_head_t stack_head_t;
+typedef list_head_t stack_node_t;
 
 #define stack_head_init(...) list_head_init(__VA_ARGS__)
+#define stack_node_init(...) list_head_init(__VA_ARGS__)
 
 #define DECLARE_STACK(name)						\
 	stack_head_t name[1];                                           \

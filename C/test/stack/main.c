@@ -3,7 +3,7 @@
 #include <lobject/lassert.h>
 
 struct node {
-	stack_head_t linker;
+	stack_node_t linker;
 	int value;
 };
 

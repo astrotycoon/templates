@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <queue.h>
 struct node {
-	queue_head_t linker;
+	queue_node_t linker;
 	int value;
 };
 int main()

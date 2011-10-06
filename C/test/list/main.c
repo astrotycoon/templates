@@ -5,7 +5,7 @@
 #include <lobject/new.h>
 
 struct mynode {
-	list_head_t linker;
+	list_node_t linker;
 	int value;
 };
 int main()
@@ -22,7 +22,7 @@ int main()
 	DECLARE_LIST(hdr);
 	for (i = 0; i < 5; i++) {
 		struct mynode *tmp = new(struct mynode);
-		list_head_init(tmp);
+		list_node_init(tmp);
 		tmp->value = i;
 		list_add_front(tmp, linker, hdr);
 	}
@@ -77,8 +77,6 @@ int main()
 	}
 	
 	puts("=====Test list_copy=====");
-	list_head_t rethead[1];
-	list_head_init(rethead);
 	head = list_copy(hdr, struct mynode, linker);
 
 	list_for_each_reverse(itt, head, linker) {
