@@ -46,9 +46,9 @@
 
 #define LList_append(item, list)					\
 do {                                                                    \
+ 	typedef typeof(LList_node_t(list)) __Node_t;			\
 	typeof(list) __list = (list);					\
-	typeof(LList_node_t(__list)) *__new_node = 			\
-				new(typeof(LList_node_t(__list)));	\
+	__Node_t *__new_node = 	new(__Node_t);				\
 	list_node_init(&__new_node->linker);                            \
 	memcpy(&__new_node->data, &(item),				\
 			sizeof(typeof(*__list->data)));			\
@@ -60,19 +60,20 @@ do {                                                                    \
 ({                                                                      \
  	typeof(list) __list = (list);					\
 	typeof(list) __begin = list_next(__list); 		        \
-	&__begin->data;                                                 \
+	(typeof((list)->data))&__begin->data;		                \
 })
 
 #define LList_end(list)							\
 ({                                                                      \
- 	&(list)->data;	                                		\
+ 	(typeof((list)->data))&(list)->data;	              		\
 })
 
 #define LList_next(pos, list)						\
 ({                                                                      \
- 	typeof(list) __pos = list_entry(pos, typeof(*(list)), data);    \
- 	typeof(list) __next = list_next(__pos);				\
-	&__next->data;                                                  \
+ 	typedef typeof(LList_node_t(list)) __Node_t;			\
+ 	__Node_t *__pos = list_entry(pos, __Node_t, data);       	\
+ 	__Node_t *__next = list_next(__pos);				\
+	&__next->data;                            			\
 })
 
 #endif /*_LIST_H_*/
