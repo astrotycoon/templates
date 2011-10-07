@@ -13,6 +13,8 @@
 		type *data;                                             \
 	}
 
+#define LList_Iterator(type) type *
+
 #define  LList_node_t(list)						\
 	struct {                                                        \
 		list_head_t linker;                                     \

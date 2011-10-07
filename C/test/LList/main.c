@@ -1,6 +1,7 @@
 #include <stdio.h>
 /*LList即线性表容器*/
 #include <LList.h>
+
 /*被测试自定义数据类型*/
 struct node {
 	int value;
@@ -10,11 +11,11 @@ int main()
 {
 	int i;
 /**
- * 相于c++代码的List<struct node> *list = new(list<struct node>)
+ * 相当于c++代码的List<struct node> *list = new(list<struct node>)
 **/
 	LList(struct node) *list = new(LList(struct node));
 /**
- * 由于没有构造方法。只好手动调用
+ * 由于没有C语言没有构造方法概念。只好手动调用
 **/
 	LList_init(list);
 
@@ -33,9 +34,10 @@ int main()
 	printf("size: %d\n", LList_size(list));
 
 /**
- * 用传入容器的类型参数对应指针做为迭代器
+ * 用传入容器的类型参数对应指针做为迭代器,相当于
+ * List<struct node>::iterator itt;
 **/
-	struct node *itt;
+	LList_Iterator(struct node) itt;
 /**
  * 相当于for (itt = list->begin(); itt != list->end(); itt++)
 **/
