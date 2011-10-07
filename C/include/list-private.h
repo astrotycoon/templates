@@ -31,26 +31,6 @@ __list_insert(struct __double_list *node, struct __double_list *before,
 	__list_concatenate(node, after);
 }
 
-static inline void
-__list_add(struct __double_list *node, struct __double_list *head)
-{
-	__list_insert(node, head, head->next);
-}
-
-static inline void
-__list_add_tail(struct __double_list *node, struct __double_list *head)
-{
-	__list_insert(node, head->prev, head);
-}
-
-static inline struct __double_list * __list_delete(struct __double_list *node)
-{
-	struct __double_list *prev = node->prev;
-	struct __double_list *next = node->next;
-	__list_concatenate(prev, next);
-	__list_head_init(node);
-	return node;
-}
 
 static inline struct __double_list *__list_prev(struct __double_list *node)
 {
@@ -60,6 +40,25 @@ static inline struct __double_list *__list_prev(struct __double_list *node)
 static inline struct __double_list *__list_next(struct __double_list *node)
 {
 	return node->next;
+}
+
+static inline void
+__list_add(struct __double_list *node, struct __double_list *head)
+{
+	__list_insert(node, head, __list_next(head));
+}
+
+static inline void
+__list_add_tail(struct __double_list *node, struct __double_list *head)
+{
+	__list_insert(node, __list_prev(head), head);
+}
+
+static inline struct __double_list * __list_delete(struct __double_list *node)
+{
+	__list_concatenate(__list_prev(node), __list_next(node));
+	__list_head_init(node);
+	return node;
 }
 
 static inline struct __double_list * __list_begin(struct __double_list *head)
@@ -72,9 +71,5 @@ static inline struct __double_list * __list_rbegin(struct __double_list *head)
 	return __list_prev(head);
 }
 
-static inline struct __double_list * __list_end(struct __double_list *head)
-{
-	return head;
-}
 
 #endif /*_LIST_PRIVATE_H_*/

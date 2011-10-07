@@ -248,8 +248,8 @@ do {                                                            \
 #define list_next_1(ptr)						\
 ({                                                                      \
  	typeof(ptr) __ptr = (ptr);                                      \
-	list_head_t *next = __list_next((list_head_t *)__ptr);          \
-	list_entry(next, typeof(*__ptr));                               \
+	list_head_t *__next = __list_next((list_head_t *)__ptr);        \
+	list_entry(__next, typeof(*__ptr));                             \
 })
 
 #define list_next_2(ptr, member)					\

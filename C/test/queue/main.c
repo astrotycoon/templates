@@ -4,6 +4,10 @@ struct node {
 	queue_node_t linker;
 	int value;
 };
+#define INT(name)							\
+	struct {                                                        \
+		name value;                                             \
+	}
 int main()
 {
 	DECLARE_QUEUE(queue);

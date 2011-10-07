@@ -24,7 +24,7 @@ int main()
 		struct mynode *tmp = new(struct mynode);
 		list_node_init(tmp);
 		tmp->value = i;
-		list_add_front(tmp, linker, hdr);
+		list_add(tmp, linker, hdr);
 	}
 	list_head_t *tmp = hdr->next;
 	for (i = 0; i < 5; i++) {
@@ -90,7 +90,7 @@ int main()
 	}
 
 	puts("=====Test list_del=====");
-	list_del_front(head, struct mynode, linker);
+	list_del(head, struct mynode, linker);
 	list_for_each_safe(itt, itt_tmp, head) {
 		printf("%d\n", itt->value);
 	}
@@ -112,7 +112,6 @@ int main()
 	list_for_each_safe(itt, itt_tmp, new_head) {
 		printf("%d\n", itt->value);
 	}
-
 
 	return 0;
 }

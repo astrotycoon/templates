@@ -79,10 +79,12 @@
 	what(x);\
 	FOR_EACH_14(what, __VA_ARGS__)
 #define CONCATENATE(arg1, arg2) arg1##arg2
+
 #define FOR_EACH_(N, what, ...) 				\
-{                                                               \
+do {                                                            \
 	CONCATENATE(FOR_EACH_, N)(what, __VA_ARGS__)            \
-}
+} while (0)
+
 #define FOR_EACH(what, ...) FOR_EACH_(PP_SHORT_NARG(__VA_ARGS__), what, __VA_ARGS__)
 
 #define _LCALL(what_, N) CONCATENATE(what_, N)
