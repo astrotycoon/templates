@@ -21,11 +21,12 @@ int main()
 
 	for (i = 0; i < 10; i++) {
 		struct node node;
-		node.value = 10 * (i + 1);
+		node.value = 10 * i;
 /**
  * 相当于list->append(node);
 **/
-		LList_append(node, list);
+		//LList_append(node, list);
+		LList_push_back(node, list);
 	}
 
 /**

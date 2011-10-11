@@ -11,6 +11,7 @@
 	struct {                                                        \
 		list_head_t linker;                                     \
 		type *data;                                             \
+		LList_headInfo_t headInfo;				\
 	}
 
 #define LList_Iterator(type) type *
@@ -22,29 +23,22 @@
 	}                                                               \
 
 #define LList_init(ptr)							\
-({                                                                      \
- 	int ret = 0;                                                    \
-	LList_headInfo_t *headInfo = new(LList_headInfo_t);             \
-	if (headInfo) {                                                 \
-		LList_headInfoInit(headInfo);                           \
-		(ptr)->data = (typeof((ptr)->data))headInfo;            \
- 		list_head_init(&(ptr)->linker);				\
-	} else {                                                        \
-		ret = -ENOMEM;                                          \
-	}                                                               \
-	ret;                                                            \
-})
+do {                                                                    \
+ 	typeof(ptr) __LList_init_ptr = (ptr);				\
+	LList_headInfoInit(&(__LList_init_ptr)->headInfo);              \
+	list_head_init(&(__LList_init_ptr)->linker);			\
+} while (0)
 
 #define LList_size(ptr)							\
 ({                                                                      \
- 	((LList_headInfo_t *)((ptr)->data))->size;                      \
+ 	(ptr)->headInfo.size;			                        \
 })
 
 #define LList_increaseSize(list)					\
-	LList_head_increaseSize((LList_headInfo_t *)((list)->data))
+	LList_head_increaseSize(&(list)->headInfo)			
 
 #define LList_decreaseSize(list)					\
-	LList_head_decreaseSize((LList_headInfo_t *)((list)->data))
+	LList_head_decreaseSize(&(list)->headInfo)
 
 #define LList_append(item, list)					\
 do {                                                                    \
@@ -57,6 +51,8 @@ do {                                                                    \
 	list_add(__new_node, &__list->linker);                          \
 	LList_increaseSize(__list);                                     \
 } while (0)                                                             
+
+#define LList_push_back(...) LList_append(__VA_ARGS__)
 
 #define LList_begin(list)						\
 ({                                                                      \
