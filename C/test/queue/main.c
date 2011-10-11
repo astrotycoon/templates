@@ -15,7 +15,7 @@ int main()
 	int i;
 
 	for (i = 0; i < 10; i++) {
-		node = new(struct node);
+		node = _new(struct node);
 		queue_head_init(node);
 		node->value = i;
 		enqueue(node, queue);

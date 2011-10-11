@@ -21,7 +21,7 @@ int main()
 	puts("=====Test list_head_init, list_entry, list_add=====");
 	DECLARE_LIST(hdr);
 	for (i = 0; i < 5; i++) {
-		struct mynode *tmp = new(struct mynode);
+		struct mynode *tmp = _new(struct mynode);
 		list_node_init(tmp);
 		tmp->value = i;
 		list_add(tmp, linker, hdr);

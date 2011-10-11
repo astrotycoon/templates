@@ -13,7 +13,7 @@ int main()
 	int i;
 
 	for (i = 0; i < 10; i++) {
-		node = new(struct node);
+		node = _new(struct node);
 		deque_head_init(node);
 		node->value = i;
 		enqueue(node, deque);
@@ -24,7 +24,7 @@ int main()
 	}
 
 	for (i = 0; i < 10; i++) {
-		node = new(struct node);
+		node = _new(struct node);
 		deque_head_init(node);
 		node->value = i;
 		enqueue_front(node, deque);

@@ -15,7 +15,7 @@ int main()
 	int i = 0;
 
 	for (i = 0; i < 10; i++) {
-		node = new(struct node);
+		node = _new(struct node);
 		stack_head_init(node, linker);
 		node->value = i;
 		list_add(node, stack);

@@ -14,7 +14,7 @@
 		LList_headInfo_t headInfo;				\
 	}
 
-#define LList_Iterator(type) type *
+#define iterator_typeof(ptr) typeof(ptr->data)
 
 #define  LList_node_t(list)						\
 	struct {                                                        \
@@ -28,6 +28,19 @@ do {                                                                    \
 	LList_headInfoInit(&(__LList_init_ptr)->headInfo);              \
 	list_head_init(&(__LList_init_ptr)->linker);			\
 } while (0)
+
+#define LList_new(type)							\
+({                                                                      \
+ 	struct {                                                        \
+		list_head_t linker;                                     \
+		type * data;                                            \
+		LList_headInfo_t headInfo;                              \
+	} *ret;                                                         \
+	ret = _new(typeof(*ret));                                       \
+	if (ret)                                                        \
+		LList_init(ret);                                        \
+	(void *) ret;                                                   \
+})
 
 #define LList_size(ptr)							\
 ({                                                                      \
@@ -44,7 +57,7 @@ do {                                                                    \
 do {                                                                    \
  	typedef typeof(LList_node_t(list)) __Node_t;			\
 	typeof(list) __list = (list);					\
-	__Node_t *__new_node = 	new(__Node_t);				\
+	__Node_t *__new_node = 	_new(__Node_t);				\
 	list_node_init(&__new_node->linker);                            \
 	memcpy(&__new_node->data, &(item),				\
 			sizeof(typeof(*__list->data)));			\
@@ -75,4 +88,3 @@ do {                                                                    \
 })
 
 #endif /*_LIST_H_*/
-

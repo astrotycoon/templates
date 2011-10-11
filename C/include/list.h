@@ -386,11 +386,11 @@ do {                                                                    \
 
 #define list_copy_2(head, type)						\
 ({                                                                      \
- 	list_head_t *rethead = new(list_head_t);                        \
+ 	list_head_t *rethead = _new(list_head_t);                       \
 	list_head_init(rethead);                                        \
 	type *new_node, *itt;                                           \
 	list_for_each (itt, head) {                                     \
-		new_node = new(type);                                   \
+		new_node = _new(type);                                  \
 		if (!new_node) {			         	\
  			list_destroy(rethead, type);                    \
 			break;                                          \
@@ -404,11 +404,11 @@ do {                                                                    \
 
 #define list_copy_3(head, type, member)					\
 ({                                                                      \
- 	list_head_t *rethead = new(list_head_t);                        \
+ 	list_head_t *rethead = _new(list_head_t);                       \
 	list_head_init(rethead);                                        \
 	type *new_node, *itt;                                           \
 	list_for_each (itt, head) {                                     \
-		new_node = new(type);                                   \
+		new_node = _new(type);                                  \
 		if (!new_node) {					\
  			list_destroy(rethead, type);                    \
 			break;                                          \
@@ -431,7 +431,7 @@ do {                                                                    \
 
 #define list_split_2(pos, head)						\
 ({                                                                      \
- 	list_head_t *rethead = new(list_head_t);                        \
+ 	list_head_t *rethead = _new(list_head_t);                       \
 	list_head_init(rethead);                                        \
                                                                         \
 	list_head_t *cur = (list_head_t *)pos;                          \
@@ -446,7 +446,7 @@ do {                                                                    \
 
 #define list_split_3(pos, member, head)					\
 ({                                                                      \
- 	list_head_t * rethead = new(list_head_t);                       \
+ 	list_head_t * rethead = _new(list_head_t);                      \
 	list_head_init(rethead);                                        \
 	                                                                \
 	list_head_t *cur = &pos->member;                                \
