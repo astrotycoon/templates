@@ -79,9 +79,13 @@ do {                                                                    \
  	(typeof((list)->data))&(list)->data;	              		\
 })
 
-#define LList_next(pos, list)						\
+#define LList_next(pos)							\
 ({                                                                      \
- 	typedef typeof(LList_node_t(list)) __Node_t;			\
+	typedef struct {                                                \
+		list_head_t linker;                                     \
+		typeof(*pos) data;                                      \
+		LList_headInfo_t headInfo;				\
+	} __Node_t;							\
  	__Node_t *__pos = list_entry(pos, __Node_t, data);       	\
  	__Node_t *__next = list_next(__pos);				\
 	&__next->data;                            			\

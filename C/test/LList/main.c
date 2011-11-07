@@ -41,7 +41,7 @@ int main()
 	puts("print:");
 	for (itt = LList_begin(list);
 			itt != LList_end(list);
-			itt = LList_next(itt, list)) {
+				itt = LList_next(itt)) {
 		printf("%d\n", itt->value);
 	}
 
